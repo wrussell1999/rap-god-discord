@@ -24,7 +24,7 @@ def make_mp3(text, filename):
         out.write(response.audio_content)
         print(f'Audio content written to {filename}')
     sound1 = AudioSegment.from_mp3(filename)
-    sound2 = AudioSegment.from_mp3("supreme.mp3")
+    sound2 = AudioSegment.from_mp3("static/audio/beat.mp3")
     output = sound1.overlay(sound2, position=100)
 
     new_filename = os.path.join(os.path.dirname(

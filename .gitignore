@@ -123,3 +123,7 @@ creds.json
 
 # discord
 discord.json
+config/
+
+# vscode
+.vscode/
