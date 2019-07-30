@@ -120,3 +120,6 @@ cache/
 
 # GCP creds
 creds.json
+
+# discord
+discord.json
