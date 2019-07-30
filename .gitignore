@@ -117,3 +117,6 @@ dmypy.json
 
 # Projcet specific settings
 cache/
+
+# GCP creds
+creds.json
