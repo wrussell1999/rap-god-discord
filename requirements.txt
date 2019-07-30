@@ -1,0 +1,6 @@
+discord
+PyNaCl
+nltk
+tswift
+google-cloud-texttospeech
+pydub
