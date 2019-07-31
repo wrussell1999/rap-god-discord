@@ -35,12 +35,10 @@ async def rap(ctx):
     if (len(ctx.message.content) > 1):
         word = ctx.message.content.split(' ')[1]
         print(word)
-        # rap_lyrics = gen.generate_lyrics(word)
-        # print(rap_lyrics)
+        rap_lyrics = gen.generate_lyrics(word)
         voice_channel = bot.get_channel(config['voice_channel'])
         voice_client = await voice_channel.connect()
-        # thread = threading.Thread(target=lambda: send_audio(word, ctx.message.author, voice_channel))
-        send_audio(word, ctx.message.author, voice_client)
+        send_audio(rap_lyrics, ctx.message.author, voice_client)
         
     else:
         await ctx.channel.send('Not valid')
