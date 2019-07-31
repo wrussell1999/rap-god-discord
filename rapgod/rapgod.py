@@ -41,11 +41,11 @@ async def rap(ctx):
         try:
             voice_client = await voice_channel.connect()
         except discord.ClientException:
-            ctx.send('Channel in use')
+            await ctx.send('Channel in use')
         if not voice_client.is_playing():
             send_audio(rap_lyrics, ctx.message.author, voice_client)
         else:
-            ctx.send('There is currently a rap being played')  
+            await ctx.send('There is currently a rap being played')  
         
     else:
         await ctx.send('Not valid.\nTry `!rap <word>`')
