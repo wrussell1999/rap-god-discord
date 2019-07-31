@@ -32,25 +32,27 @@ async def on_message(message):
 
 @bot.command()
 async def rap(ctx):
-    if (len(ctx.message.content) > 1):
-        word = ctx.message.content.split(' ')[1]
+    words = ctx.message.content.split(' ')
+    if (len(words) > 1):
+        word = words[1]
         print(word)
         rap_lyrics = gen.generate_lyrics(word)
-        voice_channel = bot.get_channel(config['voice_channel'])
-        voice_client = await voice_channel.connect()
-        send_audio(rap_lyrics, ctx.message.author, voice_client)
+        voice_channel = bot.get_channel(config['voice_channel_id'])
+        try:
+            voice_client = await voice_channel.connect()
+        except discord.ClientException:
+            ctx.send('Channel in use')
+        if not voice_client.is_playing():
+            send_audio(rap_lyrics, ctx.message.author, voice_client)
+        else:
+            ctx.send('There is currently a rap being played')  
         
     else:
-        await ctx.channel.send('Not valid')
+        await ctx.send('Not valid.\nTry `!rap <word>`')
 
 def send_audio(text, user, voice_client):
     user_id = user.id
     filename = f"cache/recordings/{user_id}-{uuid.uuid4()}.mp3"
     filename = text_to_mp3.make_mp3(text, filename)
-    if user_id in clips:
-        clips[user_id].append(filename)
-    else:
-        clips[user_id] = deque([filename])
     audio = discord.FFmpegPCMAudio(filename)
     voice_client.play(audio)
-    # await voice_client.disconnect()
