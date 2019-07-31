@@ -13,3 +13,8 @@ $ pip3 install -r requirements.txt
 ### Requirements
 
 Requires ffmmeg installed separately for audio
+
+## Contributors
+
+- [Will Russell](https://github.com/wrussell1999): Discord bot, text to speech with GCP, and mp3 layering.
+- [Justin Chadwell](https://github.com/jedevc): Natural language processing and lyric generation
