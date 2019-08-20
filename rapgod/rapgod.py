@@ -36,41 +36,48 @@ async def on_message(message):
 @bot.command()
 async def rap(ctx):
     words = ctx.message.content.split(' ')
-    if (len(words) > 1):
-        word = words[1]
 
-        print(f'Generating rap (theme: {word})...')
+    if (len(words) != 2):
+        await ctx.send('Not a valid command.\nTry `!rap <word>`')
+        return
 
-        rap_lyrics = gen.generate_lyrics(word)
-        audio = gen_audio(rap_lyrics)
+    theme_word = words[1]
 
-        print('Connecting voice...')
-        voice_channel = bot.get_channel(config['voice_channel_id'])
-        try:
-            voice_client = await voice_channel.connect()
-        except discord.ClientException:
-            await ctx.send('Channel in use')
-        if not voice_client.is_playing():
-            await send_audio(audio, voice_client)
-        else:
-            await ctx.send('There is currently a rap being played')
+    print(f'-- Generating rap (theme: {theme_word})...')
+    PERF_start = time.time()
 
-    else:
-        await ctx.send('Not valid.\nTry `!rap <word>`')
+    rap_lyrics = gen.generate_lyrics(theme_word)
 
+    PERF_end = time.time()
+    print(f'↳ TOTAL LYRICS TIME {PERF_end - PERF_start}')
+    print('-- Start audio gen...')
+    PERF_start = time.time()
+
+    audio = gen_audio(rap_lyrics)
+
+    PERF_end = time.time()
+    print(f'↳ TOTAL AUDIO TIME {PERF_end - PERF_start}')
+
+    voice_channel = bot.get_channel(config['voice_channel_id'])
+    try:
+        voice_client = await voice_channel.connect()
+    except discord.ClientException:
+        await ctx.send('Voice channel is already in use')
+        return
+
+    await send_audio(audio, voice_client)
 
 def gen_audio(text):
-    print('- Start track gen...')
-    PERF_start = time.time()
     pcm_buffer = text_to_speech.make_stream(text)
-    PERF_end = time.time()
-    print(f'- TOTAL GEN TIME {PERF_end - PERF_start}')
-
     return discord.PCMAudio(pcm_buffer)
 
 async def send_audio(audio, voice_client):
-    print('Start send...')
-    PERF_start = time.time()
-    await voice_client.play(audio, after=voice_client.disconnect)
-    PERF_end = time.time()
-    print(f'- TOTAL send {PERF_end - PERF_start}')
+    voice_client.play(audio)
+
+    # this loop can probably be removed by using the "after=" kwarg
+    # of play() that is called when it finishes. however, that seems
+    # to be very hard to get to work
+    while voice_client.is_playing():
+        await asyncio.sleep(1)
+
+    await voice_client.disconnect()

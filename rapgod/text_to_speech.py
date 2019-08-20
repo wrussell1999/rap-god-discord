@@ -15,7 +15,7 @@ backing_track = AudioSegment.from_mp3('static/audio/beat.mp3')
 
 def make_stream(text):
     global backing_track
-    print('Running speech synthesis...', end='', flush=True)
+    print('   Running speech synthesis...', end='', flush=True)
     PERF_start = time.time()
 
     synthesis_input = texttospeech.types.SynthesisInput(text=text)
@@ -33,7 +33,7 @@ def make_stream(text):
 
     PERF_end = time.time()
     print(f' [{PERF_end - PERF_start}]')
-    print('Processing result...', end='', flush=True)
+    print('   Processing result...', end='', flush=True)
     PERF_start = time.time()
 
     voice_buffer = BytesIO(response.audio_content)
@@ -42,7 +42,7 @@ def make_stream(text):
 
     PERF_end = time.time()
     print(f' [{PERF_end - PERF_start}]')
-    print('Mixing tracks...', end='', flush=True)
+    print('   Mixing tracks...', end='', flush=True)
     PERF_start = time.time()
 
     output_track = voice_track.overlay(backing_track, position=100)
@@ -50,7 +50,7 @@ def make_stream(text):
 
     PERF_end = time.time()
     print(f' [{PERF_end - PERF_start}]')
-    print('Re-encoding...', end='', flush=True)
+    print('   Re-encoding...', end='', flush=True)
     PERF_start = time.time()
 
     raw_pcm_buffer = BytesIO()
