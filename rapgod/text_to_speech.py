@@ -9,8 +9,12 @@ import time
 credentials = service_account.Credentials.from_service_account_file('config/google_cloud_key.json')
 client = texttospeech.TextToSpeechClient(credentials=credentials)
 
+# pre load backing track
+backing_track = AudioSegment.from_mp3('static/audio/beat.mp3')
+
 
 def make_stream(text):
+    global backing_track
     print('Running speech synthesis...', end='', flush=True)
     PERF_start = time.time()
 
@@ -21,7 +25,7 @@ def make_stream(text):
         ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
 
     audio_config = texttospeech.types.AudioConfig(
-        audio_encoding=texttospeech.enums.AudioEncoding.OGG_OPUS,
+        audio_encoding=texttospeech.enums.AudioEncoding.MP3,
         speaking_rate=0.93,
         pitch=-6.0)
 
@@ -33,15 +37,8 @@ def make_stream(text):
     PERF_start = time.time()
 
     voice_buffer = BytesIO(response.audio_content)
-    voice_track = AudioSegment.from_ogg(voice_buffer)
+    voice_track = AudioSegment.from_mp3(voice_buffer)
     voice_track = voice_track.set_frame_rate(96000)
-
-    PERF_end = time.time()
-    print(f' [{PERF_end - PERF_start}]')
-    print('Loading backing track...', end='', flush=True)
-    PERF_start = time.time()
-
-    backing_track = AudioSegment.from_ogg('static/audio/beat.ogg')
 
     PERF_end = time.time()
     print(f' [{PERF_end - PERF_start}]')

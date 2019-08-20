@@ -42,10 +42,6 @@ Requires ffmpeg installed separately for audio. All python ones are installed wi
 - nltk.download('punkt')
 - nltk.download('averaged_perceptron_tagger')
 
-Bots always use 64kbit/s opus for chat
-```bash
-ffmpeg -i beat.mp3 -c:a libopus -b:a 64k beat.ogg
-```
 
 ## Contributors
 
