@@ -20,7 +20,7 @@ $ pip3 install -r requirements.txt
 
 Follow [this guide](https://cloud.google.com/text-to-speech/docs/quickstart-client-libraries#client-libraries-install-python) to get GCP text-to-speech working
 
-#### Discord credentials 
+#### Discord credentials
 
 Follow [this guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) to get a Discord bot setup on your server.
 
@@ -36,6 +36,16 @@ Follow [this guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-di
 ### Requirements
 
 Requires ffmpeg installed separately for audio. All python ones are installed with `requirements.txt`
+
+#### Daniel's Notes
+- has to be python >=3.7 Perhaps
+- nltk.download('punkt')
+- nltk.download('averaged_perceptron_tagger')
+
+Bots always use 64kbit/s opus for chat
+```bash
+ffmpeg -i beat.mp3 -c:a libopus -b:a 64k beat.ogg
+```
 
 ## Contributors
 

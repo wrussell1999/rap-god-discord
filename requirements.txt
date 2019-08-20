@@ -1,6 +1,8 @@
-discord
+discord.py
+discord.py[voice]
 PyNaCl
 nltk
 tswift
 google-cloud-texttospeech
 pydub
+google-auth
