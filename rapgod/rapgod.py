@@ -42,21 +42,17 @@ async def rap(ctx):
         return
 
     theme_word = words[1]
+    start = time.time()
 
-    print(f'-- Generating rap (theme: {theme_word})...')
-    PERF_start = time.time()
-
+    print(f'Generating lyrics (theme: {theme_word})...')
     rap_lyrics = gen.generate_lyrics(theme_word)
 
-    PERF_end = time.time()
-    print(f'↳ TOTAL LYRICS TIME {PERF_end - PERF_start}')
-    print('-- Start audio gen...')
-    PERF_start = time.time()
-
+    print('Generating audio...')
     audio = gen_audio(rap_lyrics)
 
-    PERF_end = time.time()
-    print(f'↳ TOTAL AUDIO TIME {PERF_end - PERF_start}')
+    end = time.time()
+
+    print(f'Done [{end - start}s]')
 
     voice_channel = bot.get_channel(config['voice_channel_id'])
     try:
