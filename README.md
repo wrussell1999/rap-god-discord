@@ -18,7 +18,7 @@ $ pip3 install -r requirements.txt
 
 #### Google Cloud Platform credentials
 
-Follow [this guide](https://cloud.google.com/text-to-speech/docs/quickstart-client-libraries#client-libraries-install-python) to get GCP text-to-speech working
+Follow [this guide](https://cloud.google.com/text-to-speech/docs/quickstart-client-libraries#client-libraries-install-python) to get GCP text-to-speech working. Put the JSON file in the config folder and name it ```google_cloud_key.json```.
 
 #### Discord credentials
 
@@ -28,20 +28,24 @@ Follow [this guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-di
 
 ```json
 {
-    "token": "string",
+    "token": "<bot token goes here>",
     "voice_channel_id": 1234
 }
 ```
 
 ### Requirements
 
-Requires ffmpeg installed separately for audio. All python ones are installed with `requirements.txt`
+Requires ffmpeg (may not actually require it anymore) installed separately for audio. All python libraries are installed with:
+```bash
+pip3 install -r requirements.txt
+```
 
-#### Daniel's Notes
-- has to be python >=3.7 Perhaps
-- nltk.download('punkt')
-- nltk.download('averaged_perceptron_tagger')
-
+Then following python need to be run to get the natural language data sets:
+```python
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+```
 
 ## Contributors
 
