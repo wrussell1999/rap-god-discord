@@ -1,21 +1,20 @@
-import discord
-from discord.ext import commands
-from . import text_to_speech
-from . import lyrics
-import threading
-from collections import deque
+import time
 import uuid
 import json
 import logging
-
 import asyncio
-import time
+import discord
+import threading
+from collections import deque
+from discord.ext import commands
+
+from . import audio
+from . import lyrics
 
 bot = commands.Bot(command_prefix='!')
 songs = lyrics.load_songs()
 gen = lyrics.Generator(songs)
-
-clips = {}
+audio.init()
 
 with open("config/discord.json") as file:
     config = json.load(file)
@@ -48,7 +47,7 @@ async def rap(ctx):
     rap_lyrics = gen.generate_lyrics(theme_word)
 
     print('Generating audio...')
-    audio = gen_audio(rap_lyrics)
+    song = gen_audio(rap_lyrics)
 
     end = time.time()
 
@@ -61,10 +60,10 @@ async def rap(ctx):
         await ctx.send('Voice channel is already in use')
         return
 
-    await send_audio(audio, voice_client)
+    await send_audio(song, voice_client)
 
 def gen_audio(text):
-    pcm_buffer = text_to_speech.make_stream(text)
+    pcm_buffer = audio.make_stream(text)
     return discord.PCMAudio(pcm_buffer)
 
 async def send_audio(audio, voice_client):
