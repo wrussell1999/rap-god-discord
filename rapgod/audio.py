@@ -7,12 +7,13 @@ from google.oauth2 import service_account
 
 backing_tracks = []
 tracks = [
-    'beat',
+    'generic',
     'desiigner_panda',
     'eminem_not_alike',
     'eminem_type_beat',
     'future_mask_off',
-    'lil_pump_type_beat'
+    'lil_pump_type_beat',
+    'lil_pump_type_beat2'
     ]
 
 def init():
