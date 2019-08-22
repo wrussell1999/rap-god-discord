@@ -62,3 +62,13 @@ def make_stream(text):
     raw_pcm_buffer.seek(0)
 
     return raw_pcm_buffer
+
+async def save_stream(stream, path):
+    track = AudioSegment.from_raw(
+        stream,
+        sample_width=2,
+        frame_rate=48000,
+        channels=2
+    )
+
+    track.export(path+'.mp3', format='mp3')

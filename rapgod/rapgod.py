@@ -47,7 +47,7 @@ async def rap(ctx):
     rap_lyrics = gen.generate_lyrics(theme_word)
 
     print('Generating audio...')
-    song = gen_audio(rap_lyrics)
+    stream = audio.make_stream(rap_lyrics)
 
     end = time.time()
 
@@ -60,14 +60,11 @@ async def rap(ctx):
         await ctx.send('Voice channel is already in use')
         return
 
-    await send_audio(song, voice_client)
+    await send_audio(stream, voice_client)
 
-def gen_audio(text):
-    pcm_buffer = audio.make_stream(text)
-    return discord.PCMAudio(pcm_buffer)
-
-async def send_audio(audio, voice_client):
-    voice_client.play(audio)
+async def send_audio(stream, voice_client):
+    buffer = discord.PCMAudio(stream)
+    voice_client.play(buffer)
 
     # this loop can probably be removed by using the "after=" kwarg
     # of play() that is called when it finishes. however, that seems
