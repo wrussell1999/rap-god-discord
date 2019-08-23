@@ -7,12 +7,8 @@ from .. import audio
 
 from .worker import Worker
 
-def default_handler(name, exception, *args, **kwargs):
-    print('%s raised %s with args %s and kwargs %s'.format(name, str(exception), repr(args), repr(kwargs)))
-    pass
-
 class WorkerPool:
-    def __init__(self, thread_count=1, exception_handler=default_handler):
+    def __init__(self, thread_count=1):
         print(f'Worker pool created with {thread_count} thread(s)')
         # maxsize=0 means unlimited size
         self.work_queue = queue.Queue(maxsize=0)
