@@ -5,6 +5,8 @@ from pydub import effects
 from google.cloud import texttospeech
 from google.oauth2 import service_account
 
+OFFSET_MS = 15000
+
 TRACK_NAMES = [
     'generic',
     'desiigner_panda',
@@ -53,8 +55,11 @@ def make_stream(text, backing_track):
     voice_track = voice_track.set_frame_rate(96000)
 
     # Mixing tracks...
-    output_track = backing_track.overlay(voice_track, position=15000)
+    output_track = backing_track.overlay(voice_track, position=OFFSET_MS)
     output_track = output_track.set_frame_rate(48000)
+
+    # Trim output track to end when vocals end
+    output_track = output_track[:len(voice_track) + OFFSET_MS]
 
     # Re-encoding...
     raw_pcm_buffer = BytesIO()
