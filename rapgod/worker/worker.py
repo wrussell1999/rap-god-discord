@@ -2,6 +2,7 @@ import time
 import queue
 import random
 from threading import Thread
+from multiprocessing import Queue
 
 from .. import lyrics
 from .. import audio
@@ -38,8 +39,7 @@ class Worker(Thread):
                 self.results_queue.put(result)
             except Exception as e:
                 raise e
-            finally:
-                self.work_queue.task_done()
+        print(f'{self.name}: Exiting')
 
     def make_track(self, theme_word, backing_track):
         start = time.time()

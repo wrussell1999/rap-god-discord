@@ -1,3 +1,3 @@
-from .manager import WorkerPool
+from .manager import ContainedPool
 
-__all__ = ['WorkerPool']
+__all__ = ['ContainedPool']
