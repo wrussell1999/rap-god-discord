@@ -36,15 +36,29 @@ class Worker(Thread):
     def do_work(self, work):
         self.idle.clear()
 
-        word, id = work
-        stream = self.make_track(word, id)
-        result = (stream, id)
+        task_name, args = work
+        if task_name == "make_track":
+            word, id = args
+            result = self.make_track(word)
+        elif task_name == "encode_track":
+            raw_stream, id = args
+            result = self.encode_track(raw_stream)
 
-        self.results_queue.put(result)
+        self.results_queue.put((task_name, result, id))
 
-    def make_track(self, theme_word, backing_track):
+    def encode_track(self, stream):
         start = time.time()
-        print(f'{self.name}: Processing (theme \'{theme_word}\')...')
+        print(f'{self.name}: Converting stream...')
+
+        mp3_stream = audio.mp3_encode_stream(stream)
+
+        end = time.time()
+        print(f'{self.name}: Done [{end - start}s]')
+        return mp3_stream
+
+    def make_track(self, theme_word):
+        start = time.time()
+        print(f'{self.name}: Making track (theme \'{theme_word}\')...')
 
         # Generating lyrics
         rap_lyrics = self.generator.generate_lyrics(theme_word)

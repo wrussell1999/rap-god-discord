@@ -68,7 +68,7 @@ def make_stream(text, backing_track):
 
     return raw_pcm_buffer
 
-def save_stream(stream, path):
+def mp3_encode_stream(stream):
     track = AudioSegment.from_raw(
         stream,
         sample_width=2,
@@ -76,4 +76,6 @@ def save_stream(stream, path):
         channels=2
     )
 
-    track.export(path+'.mp3', format='mp3')
+    mp3_stream = BytesIO()
+    track.export(mp3_stream, format='mp3')
+    return mp3_stream
