@@ -2,6 +2,8 @@ import json
 import logging
 import asyncio
 import discord
+from io import BytesIO
+
 from discord.ext import commands
 
 from queue import Empty
@@ -35,21 +37,24 @@ async def on_message(message):
 async def rap(ctx):
     words = ctx.message.content.split(' ')
 
-    if (len(words) != 2):
-        await ctx.send('Not a valid command.\nTry `!rap <word>`')
+    if (len(words) < 2):
+        await ctx.send('Not a valid command.\nTry `!rap <words>`')
         return
 
-    theme_word = words[1]
+    theme_words = " ".join(words[1:])
 
-    print(f'Enqueue \'make_track\' (theme \'{theme_word}\')')
-    pool.enqueue("make_track", (theme_word, config['voice_channel_id']))
+    print(f'- Enqueue \'make_track\' (theme \'{theme_words}\')')
+    pool.enqueue("make_track", (theme_words, config['voice_channel_id']))
+
+    await ctx.trigger_typing()
 
 @bot.command()
 async def save(ctx):
     try:
         stream = last_song_cache[str(config['voice_channel_id'])]
-        print(f'Enqueue \'encode_track\'')
+        print(f'- Enqueue \'encode_track\'')
         pool.enqueue("encode_track", (stream, ctx.channel.id))
+        await ctx.trigger_typing()
     except KeyError:
         await ctx.send('No previous song found')
 
@@ -68,25 +73,25 @@ async def response_dispatcher():
 
 async def upload_file(stream, channel_id):
     text_channel = bot.get_channel(channel_id)
-    print(f'Disptch file to \'{text_channel}\'')
+    print(f'- Disptch file to \'{text_channel}\'')
 
     file_object = discord.File(stream, filename='rap.mp3')
     await text_channel.send(file=file_object)
 
 async def play_audio(stream, channel_id):
     voice_channel = bot.get_channel(channel_id)
-    print(f'Disptch audio to \'{voice_channel}\'')
+    print(f'- Disptch audio to \'{voice_channel}\'')
 
-    last_song_cache[str(channel_id)] = stream
+    last_song_cache[str(channel_id)] = BytesIO(stream.getvalue())
 
     try:
         voice_client = await voice_channel.connect()
     except discord.ClientException:
-        print(f'Cannot connect to channel {voice_client}')
+        print(f'Cannot connect to channel {voice_channel}')
         return
 
     if voice_client.is_playing():
-        print(f'Channel {voice_client} is busy')
+        print(f'Channel {voice_channel} is busy')
         return
     else:
         buffer = discord.PCMAudio(stream)
