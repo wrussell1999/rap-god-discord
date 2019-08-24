@@ -5,9 +5,11 @@ if __name__ == "__main__":
 
     pool = ContainedPool(thread_count=4)
     pool.start()
-    time.sleep(5)
 
-    for i in range(50):
-        pool.enqueue("test",1)
+    for i in range(20):
+        pool.enqueue("test",i)
 
     time.sleep(10)
+
+    pool.stop()
+    print("Pool stopped, ending program")

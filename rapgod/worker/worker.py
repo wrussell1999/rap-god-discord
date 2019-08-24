@@ -2,7 +2,6 @@ import time
 import queue
 import random
 from threading import Thread
-from multiprocessing import Queue
 
 from .. import lyrics
 from .. import audio
@@ -27,19 +26,21 @@ class Worker(Thread):
         print(f'{self.name}: Awake')
         while not self.abort.is_set():
             try:
-                word, id = self.work_queue.get(timeout=1)
-                self.idle.clear()
+                work = self.work_queue.get(timeout=1)
+                self.do_work(work)
             except queue.Empty:
                 self.idle.set()
-                continue
 
-            try:
-                stream = self.make_track(word, id)
-                result = (stream, id)
-                self.results_queue.put(result)
-            except Exception as e:
-                raise e
         print(f'{self.name}: Exiting')
+
+    def do_work(self, work):
+        self.idle.clear()
+
+        word, id = work
+        stream = self.make_track(word, id)
+        result = (stream, id)
+
+        self.results_queue.put(result)
 
     def make_track(self, theme_word, backing_track):
         start = time.time()

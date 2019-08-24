@@ -8,6 +8,8 @@ import threading
 from collections import deque
 from discord.ext import commands
 
+from queue import Empty
+
 from . import worker
 
 bot = commands.Bot(command_prefix='!')
@@ -47,12 +49,12 @@ async def rap(ctx):
 
 async def response_dispatcher():
     while True:
-        prepared_track = pool.get_result()
-        if prepared_track is None:
-            await asyncio.sleep(1)
-        else:
+        try:
+            prepared_track = pool.get_result()
             stream, channel_id = prepared_track
             await send_response(stream, channel_id)
+        except Empty:
+            await asyncio.sleep(1)
 
 async def send_response(stream, channel_id):
     print(f'Disptch {stream} to {channel_id}')
