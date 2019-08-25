@@ -14,7 +14,7 @@ bot = commands.Bot(command_prefix='!')
 pool = worker.ContainedPool(thread_count=4)
 last_song_cache = {}
 
-with open("config/discord.json") as file:
+with open('config/discord.json') as file:
     config = json.load(file)
 
 def main():
@@ -41,7 +41,7 @@ async def rap(ctx):
         await ctx.send('Not a valid command.\nTry `!rap <words>`')
         return
 
-    theme_words = " ".join(words[1:])
+    theme_words = ' '.join(words[1:])
 
     if ctx.message.channel.type == discord.ChannelType.private:
         print(f'- Enqueue \'make_and_encode\' (theme \'{theme_words}\')')
@@ -57,7 +57,7 @@ async def save(ctx):
     try:
         stream = last_song_cache[str(config['voice_channel_id'])]
         print(f'- Enqueue \'encode_track\'')
-        pool.enqueue("encode_track", (stream, ctx.channel.id))
+        pool.enqueue('encode_track', (stream, ctx.channel.id))
         await ctx.trigger_typing()
     except KeyError:
         await ctx.send('No previous song found')
@@ -68,23 +68,23 @@ async def response_dispatcher():
             completed_task = pool.get_result()
             task_name, result, channel_id = completed_task
 
-            if task_name == "make_track":
+            if task_name == 'make_track':
                 bot.loop.create_task(play_audio(result, channel_id))
-            elif task_name in ["encode_track", "make_and_encode"]:
+            elif task_name in ['encode_track', 'make_and_encode']:
                 bot.loop.create_task(upload_file(result, channel_id))
         except Empty:
             await asyncio.sleep(1)
 
 async def upload_file(stream, channel_id):
     text_channel = bot.get_channel(channel_id)
-    print(f'- Disptch file to \'{text_channel}\'')
+    print(f'- Dispatch file to \'{text_channel}\'')
 
     file_object = discord.File(stream, filename='rap.mp3')
     await text_channel.send(file=file_object)
 
 async def play_audio(stream, channel_id):
     voice_channel = bot.get_channel(channel_id)
-    print(f'- Disptch audio to \'{voice_channel}\'')
+    print(f'- Dispatch audio to \'{voice_channel}\'')
 
     last_song_cache[str(channel_id)] = BytesIO(stream.getvalue())
 
@@ -101,7 +101,7 @@ async def play_audio(stream, channel_id):
         buffer = discord.PCMAudio(stream)
         voice_client.play(buffer)
 
-        # this loop can probably be removed by using the "after=" kwarg
+        # this loop can probably be removed by using the 'after=' kwarg
         # of play() that is called when it finishes. however, that seems
         # to be very hard to get to work with async functions
         while voice_client.is_playing():
