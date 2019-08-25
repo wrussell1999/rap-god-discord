@@ -43,8 +43,12 @@ async def rap(ctx):
 
     theme_words = " ".join(words[1:])
 
-    print(f'- Enqueue \'make_track\' (theme \'{theme_words}\')')
-    pool.enqueue("make_track", (theme_words, config['voice_channel_id']))
+    if ctx.message.channel.type == discord.ChannelType.private:
+        print(f'- Enqueue \'make_and_encode\' (theme \'{theme_words}\')')
+        pool.enqueue('make_and_encode', (theme_words, ctx.message.channel.id))
+    else:
+        print(f'- Enqueue \'make_track\' (theme \'{theme_words}\')')
+        pool.enqueue('make_track', (theme_words, config['voice_channel_id']))
 
     await ctx.trigger_typing()
 
@@ -66,7 +70,7 @@ async def response_dispatcher():
 
             if task_name == "make_track":
                 bot.loop.create_task(play_audio(result, channel_id))
-            elif task_name == "encode_track":
+            elif task_name in ["encode_track", "make_and_encode"]:
                 bot.loop.create_task(upload_file(result, channel_id))
         except Empty:
             await asyncio.sleep(1)

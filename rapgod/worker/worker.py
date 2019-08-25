@@ -43,6 +43,10 @@ class Worker(Thread):
         elif task_name == "encode_track":
             raw_stream, id = args
             result = self.encode_track(raw_stream)
+        elif task_name == "make_and_encode":
+            word, id = args
+            pcm_stream = self.make_track(word)
+            result = self.encode_track(pcm_stream)
 
         self.results_queue.put((task_name, result, id))
 
