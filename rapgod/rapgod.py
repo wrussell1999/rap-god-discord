@@ -24,6 +24,7 @@ def main():
     bot.run(config.token)
     pool.stop()
 
+
 @bot.event
 async def on_ready():
     print('Starting response dispatcher...')
@@ -70,6 +71,9 @@ async def rap(ctx):
 
 @bot.command()
 async def save(ctx):
+    if ctx.message.channel.type != discord.ChannelType.text:
+        return
+
     try:
         stream = last_song_cache[str(config['voice_channel_id'])]
         print(f'- Enqueue \'encode_track\'')
@@ -81,6 +85,9 @@ async def save(ctx):
 
 @bot.command()
 async def use(ctx):
+    if ctx.message.channel.type != discord.ChannelType.text:
+        return
+
     user_permissions = ctx.channel.permissions_for(ctx.message.author)
 
     if not user_permissions.administrator:
