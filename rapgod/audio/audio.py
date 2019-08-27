@@ -32,7 +32,7 @@ def load_backing_tracks():
         backing_tracks.append(track)
     print("Done")
 
-    return tuple(backing_tracks)
+    return backing_tracks
 
 def make_stream(text, backing_track):
     # Running speech synthesis...
