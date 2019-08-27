@@ -75,7 +75,10 @@ async def save(ctx):
         return
 
     try:
-        stream = last_song_cache[str(config['voice_channel_id'])]
+        server_id_string = str(ctx.guild.id)
+        voice_channel_id = config.voice_channel_map[server_id_string]
+        stream = last_song_cache[str(voice_channel_id)]
+
         print(f'- Enqueue \'encode_track\'')
         pool.enqueue('encode_track', (stream, ctx.channel.id))
         await ctx.trigger_typing()
