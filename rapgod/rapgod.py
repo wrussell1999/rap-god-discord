@@ -59,7 +59,7 @@ async def rap(ctx):
             voice_channel_id = config.voice_channel_map[server_id_string]
         except KeyError:
             await ctx.send('I don\'t know which voice channel to rap in.\n'
-                           'A server admin should run the command `!set (name'
+                           'A server admin should run the command `!use (name'
                            'of voice channel)` to fix this')
             return
 
