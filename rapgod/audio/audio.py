@@ -9,10 +9,13 @@ from google.oauth2 import service_account
 OFFSET_MS = 15000
 TRACKS_DIR = 'static/audio'
 
+
 def init():
     global tts_client
-    credentials = service_account.Credentials.from_service_account_file('config/google_cloud_key.json')
+    credentials = service_account.Credentials.from_service_account_file(
+        'config/google_cloud_key.json')
     tts_client = texttospeech.TextToSpeechClient(credentials=credentials)
+
 
 def load_backing_tracks():
     backing_tracks = []
@@ -28,6 +31,7 @@ def load_backing_tracks():
 
     return backing_tracks
 
+
 def make_stream(text, backing_track):
     # Running speech synthesis...
     synthesis_input = texttospeech.types.SynthesisInput(text=text)
@@ -41,7 +45,8 @@ def make_stream(text, backing_track):
         speaking_rate=0.93,
         pitch=-6.0)
 
-    response = tts_client.synthesize_speech(synthesis_input, voice, audio_config)
+    response = tts_client.synthesize_speech(synthesis_input, voice,
+                                            audio_config)
 
     # Processing result...
     voice_buffer = BytesIO(response.audio_content)
@@ -61,6 +66,7 @@ def make_stream(text, backing_track):
     raw_pcm_buffer.seek(0)
 
     return raw_pcm_buffer
+
 
 def mp3_encode_stream(stream):
     track = AudioSegment.from_raw(

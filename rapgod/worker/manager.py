@@ -7,6 +7,7 @@ from .. import audio
 
 from .worker import Worker
 
+
 class ContainedPool:
     def __init__(self, thread_count=1):
         print('Container process for worker pool created')
@@ -22,7 +23,8 @@ class ContainedPool:
 
         print('Container process starting...')
         self.abort = Event()
-        params = (self.work_queue, self.results_queue, self.thread_count, self.abort)
+        params = (self.work_queue, self.results_queue, self.thread_count,
+                  self.abort)
         self.process = Process(target=self._run_thread_pool, args=(params))
         self.process.start()
         self.process_active = True
@@ -51,7 +53,6 @@ class ContainedPool:
     def get_result(self):
         return self.results_queue.get(block=False)
 
-
     def _run_thread_pool(self, work_queue, results_queue, thread_count, abort):
         pool = ThreadPool(work_queue,
                           results_queue,
@@ -65,6 +66,7 @@ class ContainedPool:
         print('Stopping contained pool...')
         pool.stop()
         print('Contained pool stopped')
+
 
 class ThreadPool:
     def __init__(self, work_queue, results_queue, thread_count=1):

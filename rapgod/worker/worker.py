@@ -6,6 +6,7 @@ from threading import Thread
 from .. import lyrics
 from .. import audio
 
+
 class Worker(Thread):
     def __init__(self, name, queue, results, abort, idle, backing_tracks):
         Thread.__init__(self)

@@ -7,7 +7,7 @@ if __name__ == "__main__":
     pool.start()
 
     for i in range(20):
-        pool.enqueue("test",i)
+        pool.enqueue("test", i)
 
     time.sleep(10)
 
