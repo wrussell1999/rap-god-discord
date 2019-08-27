@@ -1,3 +1,4 @@
+import os
 import random
 from io import BytesIO
 from pydub import AudioSegment
@@ -6,16 +7,7 @@ from google.cloud import texttospeech
 from google.oauth2 import service_account
 
 OFFSET_MS = 15000
-
-TRACK_NAMES = [
-    'generic',
-    'desiigner_panda',
-    'eminem_not_alike',
-    'eminem_type_beat',
-    'future_mask_off',
-    'lil_pump_type_beat',
-    'lil_pump_type_beat2'
-    ]
+TRACKS_DIR = 'static/audio'
 
 def init():
     global tts_client
@@ -24,10 +16,12 @@ def init():
 
 def load_backing_tracks():
     backing_tracks = []
+    track_names = os.listdir(TRACKS_DIR)
+
     print("Loading backing tracks...")
-    for name in TRACK_NAMES:
+    for name in track_names:
         print(f'↳ Load & normalize \'{name}\'')
-        track = AudioSegment.from_mp3(f'static/audio/{name}.mp3')
+        track = AudioSegment.from_mp3(f'static/audio/{name}')
         track = effects.normalize(track, headroom=6)
         backing_tracks.append(track)
     print("Done")
