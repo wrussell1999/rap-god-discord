@@ -60,8 +60,11 @@ class ContainedPool:
                           )
         pool.start()
 
-        while not abort.is_set():
-            time.sleep(1)
+        try:
+            while not abort.is_set():
+                time.sleep(1)
+        except KeyboardInterrupt:
+            pass
 
         print('Stopping contained pool...')
         pool.stop()
