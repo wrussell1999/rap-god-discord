@@ -38,7 +38,7 @@ def make_stream(text, backing_track):
 
     voice = texttospeech.types.VoiceSelectionParams(
         language_code='en-US',
-        ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
+        name='en-US-Wavenet-D')
 
     audio_config = texttospeech.types.AudioConfig(
         audio_encoding=texttospeech.enums.AudioEncoding.MP3,
