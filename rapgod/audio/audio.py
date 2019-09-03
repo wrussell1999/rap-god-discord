@@ -32,7 +32,7 @@ def load_backing_tracks():
     return backing_tracks
 
 
-def make_stream(text, backing_track):
+def make_stream(text, backing_track, format):
     # Running speech synthesis...
     synthesis_input = texttospeech.types.SynthesisInput(text=text)
 
@@ -60,12 +60,12 @@ def make_stream(text, backing_track):
     # Trim output track to end when vocals end
     output_track = output_track[:len(voice_track) + OFFSET_MS]
 
-    # Re-encoding...
-    raw_pcm_buffer = BytesIO()
-    output_track.export(raw_pcm_buffer, format='s16le')
-    raw_pcm_buffer.seek(0)
+    # Encoding...
+    buffer = BytesIO()
+    output_track.export(buffer, format=format)
+    buffer.seek(0)
 
-    return raw_pcm_buffer
+    return buffer
 
 
 def mp3_encode_stream(stream):

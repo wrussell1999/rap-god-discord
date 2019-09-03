@@ -47,8 +47,8 @@ class ContainedPool:
     def alive(self):
         return self.process_active
 
-    def enqueue(self, task_name, task_args):
-        self.work_queue.put((task_name, task_args))
+    def enqueue(self, task_name, task_args, channel_id):
+        self.work_queue.put((task_name, task_args, channel_id))
 
     def get_result(self):
         return self.results_queue.get(block=False)
