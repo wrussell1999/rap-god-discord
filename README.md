@@ -6,14 +6,19 @@
 
 Invite the bot to your server or just DM it.
 
-##### In any server text channel
+##### In servers
 
-- `!use <name of voice channel>` (server admins only) set which voice channel raps should be played in
-- `!rap <word(s)> ` make a rap with the given words and play it in the configured voice channel
+- `!rap <word(s)> ` make a rap with the given words and play it in a voice channel
+- `!lyrics <words(s)>` make a rap with the given words and just print it
 - `!save` save the last rap played and upload it as an mp3
+
+Server admin-only commands:
+- `!voice_channel <name of voice channel>` set which voice channel raps should be played in
+- `!lyrics_channel <name of text channel>` set which text channel the `!lyrics` command is allowed to be used allowed in (to reduce spam)
 
 ##### In a DM chat with the bot
 - `!rap <word(s)> ` make a rap with the given words and upload it as an mp3
+- `!lyrics <words(s)>` make a rap with the given words and just print it
 
 ## Setup Environment
 
