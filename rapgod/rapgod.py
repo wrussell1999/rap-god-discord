@@ -13,6 +13,8 @@ VERSION = "v0.1.0"
 config.load_config()
 pool = worker.ContainedPool(thread_count=config.thread_count)
 bot = commands.Bot(command_prefix=config.command_prefix)
+# remove built-in help
+bot.remove_command('help')
 last_song_cache = {}
 
 
@@ -33,6 +35,19 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
+
+
+@bot.command()
+async def help(ctx):
+    text = (f'rap-god-discord {VERSION} usage:\n\n'
+            '**!rap <word(s)>** - make a rap with the given words and play it '
+            'in a voice channel\n'
+            '**!lyrics <words(s)>** - make a rap with the given words and just'
+            ' print it\n'
+            '**!save** - save the last rap played and upload it as an mp3'
+            )
+
+    await ctx.send(text)
 
 
 @bot.command()

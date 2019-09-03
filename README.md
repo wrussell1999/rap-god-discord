@@ -5,6 +5,7 @@
 ## Usage
 
 Invite the bot to your server or just DM it.
+Use `!help` to get help in Discord.
 
 ##### In servers
 
