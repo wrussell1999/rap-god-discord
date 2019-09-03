@@ -8,7 +8,7 @@ from discord.ext import commands
 from . import worker
 from rapgod import config
 
-VERSION = "v0.1.0"
+VERSION = "v0.2.0"
 
 config.load_config()
 pool = worker.ContainedPool(thread_count=config.thread_count)
