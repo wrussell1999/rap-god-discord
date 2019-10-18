@@ -42,7 +42,7 @@ async def help(ctx):
     text = (f'rap-god-discord {VERSION} usage:\n\n'
             '**!rap <word(s)>** - make a rap with the given words and play it '
             'in a voice channel\n'
-            '**!lyrics <words(s)>** - make a rap with the given words and just'
+            '**!lyrics <word(s)>** - make a rap with the given words and just'
             ' print it\n'
             '**!save** - save the last rap played and upload it as an mp3'
             )
